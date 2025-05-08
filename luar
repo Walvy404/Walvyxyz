@@ -1,5 +1,5 @@
 local key = "Walvy404"
-local keylink = "https://pastebin.com/raw/YDK8pviU"
+local keylink = "https://raw.githubusercontent.com/Walvy404/Walvyxyz/refs/heads/main/key"
 local nameofthescript = "Aladia PvP"
 local whoisitmadeby = "Walvy"
 local thenoteofthekey = "yang baca anak monyet"
@@ -111,7 +111,7 @@ TextButton.MouseButton1Click:Connect(function()
 		TextButton.Text = "Correct Key!"
 		task.wait(1)
 		ScreenGui:Destroy()
-		loadstring(game:HttpGet("https://pastebin.com/raw/bnB1M0Au"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/Walvy404/Walvyxyz/refs/heads/main/daleman"))()
 	else
 		TextButton.Text = "Wrong Key!"
 		task.wait(1)
