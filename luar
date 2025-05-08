@@ -1,1 +1,135 @@
-https://pastebin.com/raw/FhDVjCTL
+local key = "Walvy404"
+local keylink = "https://pastebin.com/raw/YDK8pviU"
+local nameofthescript = "Aladia PvP"
+local whoisitmadeby = "Walvy"
+local thenoteofthekey = "yang baca anak monyet"
+
+-- GUI Elements
+local ScreenGui = Instance.new("ScreenGui")
+local KeySystem = Instance.new("Frame")
+local title = Instance.new("TextLabel")
+local scriptname = Instance.new("TextLabel")
+local madeby = Instance.new("TextLabel")
+local CopyLinkButton = Instance.new("TextButton")
+local KeyTextbox = Instance.new("TextBox")
+local TextButton = Instance.new("TextButton")
+local note = Instance.new("TextLabel")
+local UICorner = Instance.new("UICorner")
+
+-- Parent GUI
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+-- KeySystem Frame
+KeySystem.Name = "KeySystem"
+KeySystem.Parent = ScreenGui
+KeySystem.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+KeySystem.Position = UDim2.new(0.4, 0, 0.35, 0)
+KeySystem.Size = UDim2.new(0.2, 0, 0.4, 0)
+KeySystem.Active = true
+KeySystem.Draggable = true
+UICorner:Clone().Parent = KeySystem
+
+-- Title
+title.Parent = KeySystem
+title.BackgroundTransparency = 1
+title.Size = UDim2.new(1, 0, 0.15, 0)
+title.Font = Enum.Font.GothamBold
+title.Text = "Key System"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextScaled = true
+
+-- Script Name
+scriptname.Parent = KeySystem
+scriptname.BackgroundTransparency = 1
+scriptname.Position = UDim2.new(0, 0, 0.16, 0)
+scriptname.Size = UDim2.new(1, 0, 0.1, 0)
+scriptname.Font = Enum.Font.Gotham
+scriptname.Text = nameofthescript
+scriptname.TextColor3 = Color3.fromRGB(255, 255, 255)
+scriptname.TextScaled = true
+
+-- Made By
+madeby.Parent = KeySystem
+madeby.BackgroundTransparency = 1
+madeby.Position = UDim2.new(0, 0, 0.27, 0)
+madeby.Size = UDim2.new(1, 0, 0.08, 0)
+madeby.Font = Enum.Font.Gotham
+madeby.Text = "Made by: " .. whoisitmadeby
+madeby.TextColor3 = Color3.fromRGB(255, 255, 255)
+madeby.TextScaled = true
+
+-- Copy Link Button
+CopyLinkButton.Parent = KeySystem
+CopyLinkButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CopyLinkButton.BackgroundTransparency = 0.95
+CopyLinkButton.Position = UDim2.new(0.1, 0, 0.4, 0)
+CopyLinkButton.Size = UDim2.new(0.8, 0, 0.12, 0)
+CopyLinkButton.Font = Enum.Font.Gotham
+CopyLinkButton.Text = "Copy Key Link"
+CopyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyLinkButton.TextScaled = true
+UICorner:Clone().Parent = CopyLinkButton
+
+-- Key Textbox
+KeyTextbox.Parent = KeySystem
+KeyTextbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+KeyTextbox.BackgroundTransparency = 0.95
+KeyTextbox.Position = UDim2.new(0.1, 0, 0.55, 0)
+KeyTextbox.Size = UDim2.new(0.8, 0, 0.12, 0)
+KeyTextbox.Font = Enum.Font.Gotham
+KeyTextbox.Text = "Enter Key"
+KeyTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyTextbox.TextScaled = true
+UICorner:Clone().Parent = KeyTextbox
+
+-- Check Key Button
+TextButton.Parent = KeySystem
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.BackgroundTransparency = 0.95
+TextButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+TextButton.Size = UDim2.new(0.8, 0, 0.12, 0)
+TextButton.Font = Enum.Font.Gotham
+TextButton.Text = "Check Key"
+TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.TextScaled = true
+UICorner:Clone().Parent = TextButton
+
+-- Note
+note.Parent = KeySystem
+note.BackgroundTransparency = 1
+note.Position = UDim2.new(0, 0, 0.88, 0)
+note.Size = UDim2.new(1, 0, 0.08, 0)
+note.Font = Enum.Font.Gotham
+note.Text = thenoteofthekey
+note.TextColor3 = Color3.fromRGB(255, 255, 255)
+note.TextScaled = true
+
+-- Check Key Logic
+TextButton.MouseButton1Click:Connect(function()
+	if KeyTextbox.Text == key then
+		TextButton.Text = "Correct Key!"
+		task.wait(1)
+		ScreenGui:Destroy()
+		loadstring(game:HttpGet("https://pastebin.com/raw/bnB1M0Au"))()
+	else
+		TextButton.Text = "Wrong Key!"
+		task.wait(1)
+		TextButton.Text = "Check Key"
+	end
+end)
+
+-- Copy and Open Key Link
+CopyLinkButton.MouseButton1Click:Connect(function()
+	setclipboard(keylink)
+	CopyLinkButton.Text = "Copied + Opening..."
+	if pcall(function() syn.request({Url = keylink, Method = "GET"}) end) then
+		syn.request({Url = keylink, Method = "GET"})
+	elseif pcall(function() getsynasset(keylink) end) then
+		getsynasset(keylink)
+	else
+		print("Unable to open link automatically.")
+	end
+	task.wait(2)
+	CopyLinkButton.Text = "Copy Key Link"
+end)
