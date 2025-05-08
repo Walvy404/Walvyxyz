@@ -1,5 +1,5 @@
 local key = "Walvy404"
-local keylink = "loadstring(game:HttpGet(('https://pastebin.com/raw/YDK8pviU')))()"
+local keylink = "https://pastebin.com/raw/YDK8pviU"
 local nameofthescript = "Aladia PvP"
 local whoisitmadeby = "Walvy"
 local thenoteofthekey = "yang baca anak monyet"
