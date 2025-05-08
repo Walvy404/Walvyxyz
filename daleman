@@ -1,1 +1,185 @@
-https://pastebin.com/raw/bnB1M0Au
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local uis = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
+
+-- Create ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AimTriggerESP_GUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Create Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 240)
+frame.Position = UDim2.new(0.5, -150, 0.5, -120)
+frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Title bar
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 30)
+title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+title.Text = "Aimbot / Triggerbot / ESP"
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextScaled = true
+title.Font = Enum.Font.SourceSansSemibold
+title.Parent = frame
+
+-- Drag functionality
+local dragging, dragInput, dragStart, startPos
+title.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+title.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+uis.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+-- Close Button
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -30, 0, 0)
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.SourceSansBold
+closeButton.TextScaled = true
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+closeButton.Parent = frame
+
+closeButton.MouseButton1Click:Connect(function()
+	frame.Visible = false
+end)
+
+-- Minimize Button
+local minimizeButton = Instance.new("TextButton")
+minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+minimizeButton.Position = UDim2.new(1, -60, 0, 0)
+minimizeButton.Text = "-"
+minimizeButton.Font = Enum.Font.SourceSansBold
+minimizeButton.TextScaled = true
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+minimizeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+minimizeButton.Parent = frame
+
+local minimized = false
+minimizeButton.MouseButton1Click:Connect(function()
+	minimized = not minimized
+	for _, child in pairs(frame:GetChildren()) do
+		if child:IsA("TextButton") and child ~= closeButton and child ~= minimizeButton then
+			child.Visible = not minimized
+		end
+	end
+	frame.Size = minimized and UDim2.new(0, 300, 0, 30) or UDim2.new(0, 300, 0, 240)
+end)
+
+-- Create Toggle Buttons
+local function createToggleButton(name, position)
+	local button = Instance.new("TextButton")
+	button.Size = UDim2.new(0, 260, 0, 50)
+	button.Position = position
+	button.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	button.Text = name .. ": OFF"
+	button.TextColor3 = Color3.fromRGB(255, 255, 255)
+	button.Font = Enum.Font.SourceSans
+	button.TextScaled = true
+	button.Parent = frame
+	return button
+end
+
+local aimbotOn, triggerbotOn, espOn = false, false, false
+
+local aimbotButton = createToggleButton("Aimbot", UDim2.new(0, 20, 0, 50))
+local triggerbotButton = createToggleButton("Triggerbot", UDim2.new(0, 20, 0, 110))
+local espButton = createToggleButton("ESP", UDim2.new(0, 20, 0, 170))
+
+aimbotButton.MouseButton1Click:Connect(function()
+	aimbotOn = not aimbotOn
+	aimbotButton.Text = "Aimbot: " .. (aimbotOn and "ON" or "OFF")
+end)
+
+triggerbotButton.MouseButton1Click:Connect(function()
+	triggerbotOn = not triggerbotOn
+	triggerbotButton.Text = "Triggerbot: " .. (triggerbotOn and "ON" or "OFF")
+end)
+
+espButton.MouseButton1Click:Connect(function()
+	espOn = not espOn
+	espButton.Text = "ESP: " .. (espOn and "ON" or "OFF")
+
+	-- Clean up existing highlights
+	for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
+		if v:IsA("Highlight") and v.Name == "ESPHighlight" then
+			v:Destroy()
+		end
+	end
+
+	if espOn then
+		for _, p in pairs(game.Players:GetPlayers()) do
+			if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+				local highlight = Instance.new("Highlight")
+				highlight.Name = "ESPHighlight"
+				highlight.FillColor = Color3.fromRGB(255, 0, 0)
+				highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+				highlight.FillTransparency = 0.5
+				highlight.OutlineTransparency = 0
+				highlight.Adornee = p.Character
+				highlight.Parent = p.Character
+			end
+		end
+	end
+end)
+
+-- Triggerbot Logic
+uis.InputBegan:Connect(function(input)
+	if triggerbotOn and input.UserInputType == Enum.UserInputType.MouseButton2 then
+		local target = mouse.Target
+		if target and target.Parent:FindFirstChild("Humanoid") then
+			mouse1click()
+		end
+	end
+end)
+
+-- Aimbot Logic
+runService.RenderStepped:Connect(function()
+	if not aimbotOn then return end
+	local closest, shortest = nil, math.huge
+	for _, p in pairs(game.Players:GetPlayers()) do
+		if p ~= player and p.Character and p.Character:FindFirstChild("HumanoidRootPart") and p.Character:FindFirstChild("Humanoid") and p.Character.Humanoid.Health > 0 then
+			local pos, onScreen = workspace.CurrentCamera:WorldToScreenPoint(p.Character.HumanoidRootPart.Position)
+			if onScreen then
+				local dist = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).Magnitude
+				if dist < shortest then
+					shortest = dist
+					closest = p.Character
+				end
+			end
+		end
+	end
+
+	if closest then
+		local part = closest:FindFirstChild("HumanoidRootPart")
+		if part then
+			workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, part.Position)
+		end
+	end
+end)
